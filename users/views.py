@@ -1,10 +1,6 @@
 from django.shortcuts import render, redirect
-from django.contrib.auth.forms import UserCreationForm
 from .forms import UserRegisterForm, UserLoginForm
 from django.contrib import messages
-
-def login(request):
-    return render(request, 'users/login.html', {'title':'Login'})
 
 def register(request):
     if request.method == 'POST':
@@ -23,7 +19,8 @@ def login(request):
         form = UserLoginForm(request.POST)
         if form.is_valid():
             username = form.cleaned_data.get('username')
-            return redirect('register')
+            messages.success(request, f'Welcome {username}!')
+            return redirect('home')
     else:
         form = UserLoginForm()
     return render(request, 'users/login.html', {'form': form, 'title':'Login'})
