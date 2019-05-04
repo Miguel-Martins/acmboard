@@ -1,0 +1,55 @@
+{% extends "users/base.html" %}
+{% load crispy_forms_tags %}
+{% block content %}
+    <div class="container h-100">
+        <div class="d-flex justify-content-center h-100">
+            <div class="user_card">
+                <div class="d-flex justify-content-center">
+                   <form method="POST" class="text-center mb-0">
+                       <img src="https://seeklogo.com/images/A/acm-logo-0E4647935C-seeklogo.com.png" class="brand_logo" alt="Logo">
+                        {% csrf_token %}
+                       <!-- First Name -->
+                       <div class="input-group mb-1">
+                            <div class="input-group-append ">
+                                <span class="input-group-text"><i class="fas fa-user"></i></span>
+                            </div>
+                           {{ form.first_name|as_crispy_field }}
+                        </div>
+                        <!-- Last Name -->
+                        <div class="input-group mb-1">
+                            <div class="input-group-append ">
+                                <span class="input-group-text"><i class="fas fa-user"></i></span>
+                            </div>
+                           {{ form.last_name|as_crispy_field }}
+                        </div>
+                        <!-- Email -->
+                        <div class="input-group mb-1">
+                            <div class="input-group-append ">
+                                <span class="input-group-text"><i class="fas fa-envelope"></i></span>
+                            </div>
+                           {{ form.email|as_crispy_field }}
+                        </div>
+                        <!-- Password -->
+                        <div class="input-group mb-1">
+                            <div class="input-group-append ">
+                                <span class="input-group-text"><i class="fas fa-lock"></i></span>
+                            </div>
+                           {{ form.password1|as_crispy_field }}
+                        </div>
+                        <!-- Password Confirmation -->
+                        <div class="input-group mb-1">
+                            <div class="input-group-append ">
+                                <span class="input-group-text"><i class="fas fa-lock"></i></span>
+                            </div>
+                           {{ form.password2|as_crispy_field }}
+                        </div>
+                       <div class="d-flex justify-content-center login_container ">
+					        <button type="submit" name="button" class="btn login_btn">Sign Up</button>
+				        </div>
+                   </form>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock content %}
+
