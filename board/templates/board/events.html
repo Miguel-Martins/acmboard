@@ -1,0 +1,24 @@
+{% extends "board/base.html" %}
+{% load static %}
+{% block content %}
+<div class="board">
+    {% if events %}
+    {% for event in events %}
+    <div class="list">
+        <ul>
+            <header><a href="{% url 'event-detail' event.id %}"> {{ event.event_name }} </a></header>
+            <h1> {{  event.small_description }} </h1>
+            <h2>Tasks</h2>
+            {% for task in event.task_set.all %}
+            <a>
+                <li>{{ task.description }}</li>
+            </a>
+            {% endfor %}
+        </ul>
+    </div>
+    {% endfor %}
+    {% else %}
+    <header> You're not in any event at the moment! </header>
+    {%endif%}
+</div>
+{% endblock content %}

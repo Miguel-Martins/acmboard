@@ -1,40 +1,27 @@
 {% extends "board/base.html" %}
 {% block content %}
-        <div id="wrapper">
-
-            <!-- Sidebar -->
-            <div id="sidebar-wrapper">
-                <ul class="sidebar-nav">
-                    <li><a href="#">Account</a></li>
-                    <li><a href="#">Settings</a></li>
-                    <li><a href="#">Logout</a></li>
-                </ul>
-            </div>
-
-            <!-- Page content -->
-            <div id="page-content-wrapper">
-                <div class="container-fluid">
-                    <div class="row">
-                        <div class="col-lg-12">
-                            <a href="#" class="btn btn-success" id="menu-toggle">Toggle Menu</a>
-                            <h1>Sidebar Layouts are Cool</h1>
-                            <p>I love apple pie. I love apple pie. I love apple pie. I love apple pie. I love apple pie.
-                                I love apple pie. I love apple pie. I love apple pie. I love apple pie. I love apple pie.
-                                I love apple pie. I love apple pie. I love apple pie. I love apple pie. I love apple pie.
-                                I love apple pie. I love apple pie. I love apple pie. I love apple pie. I love apple pie.
-                                I love apple pie. I love apple pie. I love apple pie. I love apple pie. I love apple pie. </p>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-        </div>
-
-        <!-- Menu toggle script -->
-        <script>
-            $("#menu-toggle").click( function (e){
-                e.preventDefault();
-                $("#wrapper").toggleClass("menuDisplayed");
-            });
-        </script>
+<div class="board">
+    {% if events %}
+    {% for event in events %}
+    <div class="list">
+        <ul>
+            <header><a href="{% url 'event-detail' event.id %}"> {{ event.event_name }} </a></header>
+            <h1> {{  event.small_description }} </h1>
+            <h2>Tasks</h2>
+            {% for eventkey, tasks in tasklist.items %}
+                {% if eventkey == event.event_name %}
+                    {% for task in tasks %}
+                        <a>
+                            <li>{{ task.description }}</li>
+                        </a>
+                    {% endfor %}
+                {% endif %}
+            {% endfor %}
+        </ul>
+    </div>
+    {% endfor %}
+    {% else %}
+    <p> You're not in any event at the moment! </p>
+    {%endif%}
+</div>
 {% endblock content %}

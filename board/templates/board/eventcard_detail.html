@@ -1,0 +1,29 @@
+{% extends "board/base.html" %}
+{% load static %}
+{% block content %}
+<div class="board justify-content-center">
+    <div class="list">
+        <ul>
+            <header> {{ object.event_name }} </header>
+            <h1> {{  object.small_description }} </h1>
+            <p> {{  object.big_description }} </p>
+            <h2>Tasks</h2>
+            {% for task in object.task_set.all %}
+            <a href="#">
+                <li>{{ task.description }}</li>
+            </a>
+            {% endfor %}
+            <small> {{  object.date }} </small>
+            <br>
+            <small> {{  object.room }} </small>
+            {% if user.is_superuser %}
+            <div class="d-flex justify-content-center login_container">
+                <a class="btn login_btn" href="{% url 'event-update' object.id %}"> Edit</a>
+                <a class="btn login_btn" href="{% url 'event-delete' object.id %}"> Delete</a>
+            </div>
+            {% endif %}
+        </ul>
+    </div>
+</div>
+
+{% endblock content %}

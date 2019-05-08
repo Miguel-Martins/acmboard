@@ -14,15 +14,22 @@ Including another URLconf
     2. Add a URL to urlpatterns:  path('users/', include('users.urls'))
 """
 from django.contrib import admin
+from django.contrib.auth.views import LoginView, LogoutView
 from django.urls import path, include
+from django.conf import settings
+from django.conf.urls import url
+from django.conf.urls.static import static
 from users import views as user_views
 from board import views as board_views
+from users.forms import LoginForm
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('login/', user_views.login, name='login'),
+    path('login/', LoginView.as_view(template_name="users/login.html", authentication_form=LoginForm), name='login'),
+    path('logout/', LogoutView.as_view(), name='logout'),
     path('register/', user_views.register, name='register'),
-    path('home/', board_views.home, name='home')
-
-
+    path('home/', include('board.urls')),
 ]
+
+if settings.DEBUG:
+    urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
