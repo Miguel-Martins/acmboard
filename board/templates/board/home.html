@@ -7,16 +7,19 @@
         <ul>
             <header><a href="{% url 'event-detail' event.id %}"> {{ event.event_name }} </a></header>
             <h1> {{  event.small_description }} </h1>
-            <h2>Tasks</h2>
-            {% for eventkey, tasks in tasklist.items %}
-                {% if eventkey == event.event_name %}
-                    {% for task in tasks %}
-                        <a>
-                            <li>{{ task.description }}</li>
-                        </a>
-                    {% endfor %}
-                {% endif %}
-            {% endfor %}
+            {% if event.task_set.all %}
+                <h2>Tasks</h2>
+                {% for eventkey, tasks in tasklist.items %}
+                    {% if eventkey == event.event_name %}
+                        {% for task in tasks %}
+                            <a>
+                                <li>{{ task.description }}</li>
+                            </a>
+                        {% endfor %}
+                    {% endif %}
+                {% endfor %}
+            {% endif %}
+
         </ul>
     </div>
     {% endfor %}

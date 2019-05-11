@@ -7,23 +7,104 @@
             <header> {{ object.event_name }} </header>
             <h1> {{  object.small_description }} </h1>
             <p> {{  object.big_description }} </p>
-            <h2>Tasks</h2>
-            {% for task in object.task_set.all %}
-            <a href="#">
-                <li>{{ task.description }}</li>
-            </a>
-            {% endfor %}
             <small> {{  object.date }} </small>
-            <br>
             <small> {{  object.room }} </small>
+            <h2>Tasks</h2>
+
+            <div class="container">
+                {% for task in object.task_set.all %}
+                <div class="input-group mb-3 justify-content-center">
+                    <li class="list-group-item mb-1 mr-1">{{ task.description }} </li>
+                    {% if user.is_superuser %}
+                    <div class="input-group-append float-right">
+                        <button class="delete-task btn login_btn btn-primary" type="button" name="button"
+                            data-id="{% url 'delete_task' task.pk %}">
+                            <span class="far fa-trash-alt mr-2 mt-1"></span>
+                        </button>
+                    </div>
+                    {% endif %}
+                    {% endfor %}
+                </div>
+            </div>
             {% if user.is_superuser %}
-            <div class="d-flex justify-content-center login_container">
-                <a class="btn login_btn" href="{% url 'event-update' object.id %}"> Edit</a>
-                <a class="btn login_btn" href="{% url 'event-delete' object.id %}"> Delete</a>
+            <div class="container btn-group mt-2">
+                <button type="button" class="update-event btn login_btn btn-primary mr-1"
+                    data-id="{% url 'update_event' eventcard.pk %}">
+                    <span class="fas fa-edit mr-2"></span>Update Event</button>
+                <button type="button" class="delete-event btn login_btn btn-primary ml-1" data-id="{% url 'delete_event' eventcard.pk %}">
+                    <span class=" far fa-trash-alt mr-2"></span>Delete Event</button>
+            </div>
+            <div class="col-12 mt-2">
+                <button class="create-task btn login_btn btn-primary mb-1" type="button" name="button">
+                    <span class="fa fa-plus mr-2"></span>Create task</button>
             </div>
             {% endif %}
         </ul>
     </div>
 </div>
 
+<div class="modal fade" tabindex="-1" role="dialog" id="modal">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+
+        </div>
+    </div>
+</div>
+
 {% endblock content %}
+
+{% block scripts %}
+<script type="text/javascript">
+    $(document).ready(function () {
+
+        $(".create-task").modalForm({
+            formURL: "{% url 'create_task' pk=object.id %}"
+        });
+
+    });
+</script>
+
+<script type="text/javascript">
+    $(document).ready(function () {
+
+        // Task Creation Button
+        $(".create-task").modalForm({
+            formURL: "{% url 'create_task' pk=object.id %}"
+        });
+
+        // Task Deletion Button
+        $(".delete-task").each(function () {
+            $(this).modalForm({ formURL: $(this).data('id') });
+        })
+
+        // Update Event Button
+        $(".update-event").each(function () {
+            $(this).modalForm({ formURL: $(this).data('id') });
+        });
+
+        // Delete Event Button
+        $(".delete-event").each(function () {
+            $(this).modalForm({ formURL: $(this).data('id') });
+        })
+
+    });
+</script>
+{% endblock scripts %}
+
+
+<!--
+<div class="container list-group">
+    {% for task in object.task_set.all %}
+    <div input-group mb-1>
+        <li>{{ task.description }}</li>
+        <div class="float-right ">
+            <button class="delete-task btn login_btn btn-primary btn-sm" type="button" name="button"
+                data-id="{% url 'delete_task' task.pk %}">
+                <span class="far fa-trash-alt mr-2 mt-1"></span>
+            </button>
+        </div>
+    </div>
+    {% endfor %}
+</div>
+
+-->

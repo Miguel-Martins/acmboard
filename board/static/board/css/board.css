@@ -73,6 +73,7 @@ a { color: inherit; }
     margin: 30px auto auto 70px;
     display: flex;
     overflow-x: initial;
+    flex-wrap: wrap;
 }
 
 .board > * {
@@ -84,8 +85,8 @@ a { color: inherit; }
 
 .list {
   max-width: 400px;
-  border: 5px solid #9cb2bf;  
-  margin-bottom: auto;
+  border: 2px solid #9cb2bf;  
+  margin-bottom: 30px;
   position: relative;
   flex-direction: column;
   justify-content: center;
@@ -94,7 +95,7 @@ a { color: inherit; }
   box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
   -webkit-box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
   -moz-box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
-  border-radius: 25px;
+  border-radius: 10px;
 }
 
 .list > * {
@@ -144,13 +145,9 @@ a { color: inherit; }
     margin: 3px;
 }
 
-.list ul li {
-    width: fit-content;
-    margin: auto auto 5px;
-    color: #fff;
-    background-color:#005F9F;
-    padding: 0px 10px 3px 10px;
-    border-radius: 25px 25px 25px 25px;
-    box-shadow: 3px 2px #15829b;
+.list li {
+  background-color: #005F9F;
+  color: white;
+  border-radius: 3px!important;
 }
 

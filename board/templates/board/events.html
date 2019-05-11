@@ -8,12 +8,14 @@
         <ul>
             <header><a href="{% url 'event-detail' event.id %}"> {{ event.event_name }} </a></header>
             <h1> {{  event.small_description }} </h1>
+            {% if event.task_set.all %}
             <h2>Tasks</h2>
             {% for task in event.task_set.all %}
-            <a>
                 <li>{{ task.description }}</li>
-            </a>
             {% endfor %}
+            {% else %}
+            <h2>No tasks!</h2>
+            {% endif %}
         </ul>
     </div>
     {% endfor %}

@@ -12,6 +12,7 @@
         integrity="sha384-oS3vJWv+0UjzBfQzYUhtDYW+Pj2yciDJxpsK1OYPAYjqT085Qq/1cq5FLXAZQ7Ay" crossorigin="anonymous">
     <link rel="stylesheet" type="text/css" href="{% static 'board/css/board.css' %}">
     <link rel="stylesheet" type="text/css" href="{% static 'users/main.css' %}">
+
 </head>
 
 <body>
@@ -28,6 +29,13 @@
             <li> <a href="{% url 'logout' %}">Logout</a> </li>
         </ul>
     </nav>
+    {% if messages %}
+    {% for message in messages %}
+    <div class="ml-5 alert alert-{{ message.tags }}">
+        {{ message }}
+    </div>
+    {% endfor %}
+    {% endif %}
     {% block content %}
     {% endblock content %}
     <script src="https://code.jquery.com/jquery-3.2.1.min.js"></script>
@@ -37,6 +45,7 @@
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"
         integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl"
         crossorigin="anonymous"></script>
+    <script src="{% static 'js/jquery.bootstrap.modal.forms.min.js' %}"></script>
     {% block scripts %}
     {% endblock scripts %}
 </body>
