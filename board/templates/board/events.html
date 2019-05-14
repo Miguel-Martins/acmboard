@@ -1,14 +1,13 @@
 {% extends "board/base.html" %}
 {% load static %}
 {% block content %}
+{% for b in boards %}
 <div class="lists-container">
-
-    {% for b in boards %}
     <div class="list">
         <ul class="list-items">
-            <h3 class="list-title mb-0"> {{b.name}} ~
-                <div class="dropdown float-right">
-                    <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton"
+            <h3 class="list-title"> {{b.name}}
+                <div class="btn-group dropleft float-right">
+                    <button class="btn btn-primary dropdown-toggle" type="button" id="dropdownMenuButton"
                         data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                         <i class="fa fa-plus fa-fw"></i>
                     </button>
@@ -20,19 +19,16 @@
                     </div>
                 </div>
             </h3>
-            <img class="" width="100" height="100" src="{{b.image.url}}" alt="Banner">
+            <img class="" height="300" src="{{b.image.url}}" alt="Banner">
         </ul>
     </div>
     {% if b.eventcard_set.all %}
-
 
     {% for event in b.eventcard_set.all %}
     <div class="list">
         <h3 class="list-title mb-0"><a href="{% url 'event-detail' event.id %}"> {{ event.event_name }} </a>
             <div class="progress">
-                <div class="progress-bar" role="progressbar" style="width: 25%" aria-valuenow="25" aria-valuemin="0"
-                    aria-valuemax="100">
-                </div>
+                <div class="progress-bar" role="progressbar" style="width:{{ event.get_percentage }}%;"></div>
             </div>
         </h3>
         <h5 class="ml-3"> {{  event.small_description }} </h5>
@@ -47,13 +43,14 @@
             {% else %}
             <h5 class="ml-2">No Tasks!</h5>
             {% endif %}
-            <h4 class="ml-2">Attachments<a href="{% url 'add_attachment' event.id %}"><button type="button"
-                        class="btn btn-sm btn-primary m-1">
+            <h4 class="mt-2 ml-2">Attachments<a href="{% url 'add_attachment' event.id %}"><button type="button"
+                        class="btn btn-sm btn-primary ml-1">
                         <span class="fa fa-plus fa-fw"></span></button></a></h4>
             {% for a in event.attachment_set.all %}
-            <a href="{{a.file.url}}">{{a.file.name}}</a>
+            <a class="m-1" href="{{a.file.url}}">{{a.file.name}}</a>
             {% endfor %}
-            <button type="button" class="join-event btn btn-primary ml-1" data-id="{% url 'join_event' pk=event.pk %}">
+            <button type="button" class="join-event btn btn-primary ml-1 mt-2"
+                data-id="{% url 'join_event' pk=event.pk %}">
                 <span class="fa fa-plus mr-2"></span>Join Event</button>
         </ul>
     </div>
@@ -61,8 +58,8 @@
     {% else %}
     <h3 class="list-title mb-0">There are no events at the moment</h3>
     {%endif%}
-    {% endfor %}
 </div>
+{% endfor %}
 {% endblock content %}
 
 {% block scripts %}

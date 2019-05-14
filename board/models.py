@@ -26,6 +26,18 @@ class EventCard(models.Model):
     def get_absolute_url(self):
         return reverse('event-detail', kwargs={'pk':self.pk})
 
+    def get_percentage(self):
+        percentage = 0
+        totalTasks = self.task_set.all().count()
+        completedTasks = self.task_set.all().filter(isCompleted=True).count()
+        if totalTasks > 0:
+            percentage = completedTasks / totalTasks *100
+
+        return percentage
+
+
+
+
 class Attachment(models.Model):
     file = models.FileField(upload_to='attachment_files')
     event = models.ForeignKey(EventCard, on_delete = models.CASCADE, null=True, blank=True)

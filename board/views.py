@@ -102,6 +102,7 @@ class LeaveEventView(LoginRequiredMixin, BSModalUpdateView):
             for task in tasks:
                 task.users.remove(self.request.user.id)
             form.instance.users.remove(self.request.user)
+        form.instance.save()
         return super().form_valid(form)
 
 class JoinTaskView(LoginRequiredMixin, BSModalUpdateView):
@@ -115,6 +116,7 @@ class JoinTaskView(LoginRequiredMixin, BSModalUpdateView):
         if not form.instance.users.all().filter(pk = self.request.user.id):
             form.instance.event.users.add(self.request.user)
             form.instance.users.add(self.request.user)
+        form.instance.save()
         return super().form_valid(form)
 
 class LeaveTaskView(LoginRequiredMixin, BSModalUpdateView):
@@ -126,7 +128,9 @@ class LeaveTaskView(LoginRequiredMixin, BSModalUpdateView):
 
     def form_valid(self, form):
         if form.instance.users.all().filter(pk = self.request.user.id):
+            form.instance.isCompleted = True
             form.instance.users.remove(self.request.user)
+            form.instance.save()
         return super().form_valid(form)
 
 class BoardCreateView(LoginRequiredMixin, CreateView):
@@ -150,7 +154,7 @@ class CreateAttachment(LoginRequiredMixin, CreateView):
     fields=['file']
     template_name = 'board/create_attachment.html'
     success_url = reverse_lazy('events')
-    
+
     def form_valid(self, form):
         form.instance.event = get_object_or_404(EventCard, pk=self.kwargs['pk'])
         return super().form_valid(form)
