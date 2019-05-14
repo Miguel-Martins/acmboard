@@ -1,26 +1,83 @@
 {% extends "board/base.html" %}
 {% load static %}
 {% block content %}
-<div class="board">
-    {% if events %}
-    {% for event in events %}
+<div class="lists-container">
+
+    {% for b in boards %}
     <div class="list">
-        <ul>
-            <header><a href="{% url 'event-detail' event.id %}"> {{ event.event_name }} </a></header>
-            <h1> {{  event.small_description }} </h1>
+        <ul class="list-items">
+            <h3 class="list-title mb-0"> {{b.name}} ~
+                <div class="dropdown float-right">
+                    <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton"
+                        data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                        <i class="fa fa-plus fa-fw"></i>
+                    </button>
+                    <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                        {% for event in events %}
+                        <a class="dropdown-item"
+                            href="{% url 'event-to-board' pk=event.id board=b.id %}">{{ event.event_name }}</a>
+                        {%endfor%}
+                    </div>
+                </div>
+            </h3>
+            <img class="" width="100" height="100" src="{{b.image.url}}" alt="Banner">
+        </ul>
+    </div>
+    {% if b.eventcard_set.all %}
+
+
+    {% for event in b.eventcard_set.all %}
+    <div class="list">
+        <h3 class="list-title mb-0"><a href="{% url 'event-detail' event.id %}"> {{ event.event_name }} </a>
+            <div class="progress">
+                <div class="progress-bar" role="progressbar" style="width: 25%" aria-valuenow="25" aria-valuemin="0"
+                    aria-valuemax="100">
+                </div>
+            </div>
+        </h3>
+        <h5 class="ml-3"> {{  event.small_description }} </h5>
+        <ul class="list-items">
             {% if event.task_set.all %}
-            <h2>Tasks</h2>
+            <h4 class="ml-2">Tasks</h4>
             {% for task in event.task_set.all %}
+            <a class="join-task ml-1" data-id="{% url 'join_task' task.pk %}">
                 <li>{{ task.description }}</li>
+            </a>
             {% endfor %}
             {% else %}
-            <h2>No tasks!</h2>
+            <h5 class="ml-2">No Tasks!</h5>
             {% endif %}
+            <h4 class="ml-2">Attachments<a href="{% url 'add_attachment' event.id %}"><button type="button"
+                        class="btn btn-sm btn-primary m-1">
+                        <span class="fa fa-plus fa-fw"></span></button></a></h4>
+            {% for a in event.attachment_set.all %}
+            <a href="{{a.file.url}}">{{a.file.name}}</a>
+            {% endfor %}
+            <button type="button" class="join-event btn btn-primary ml-1" data-id="{% url 'join_event' pk=event.pk %}">
+                <span class="fa fa-plus mr-2"></span>Join Event</button>
         </ul>
     </div>
     {% endfor %}
     {% else %}
-    <header> You're not in any event at the moment! </header>
+    <h3 class="list-title mb-0">There are no events at the moment</h3>
     {%endif%}
+    {% endfor %}
 </div>
 {% endblock content %}
+
+{% block scripts %}
+<script type="text/javascript">
+    $(document).ready(function () {
+
+        // Task Creation Button
+        $(".join-event").each(function () {
+            $(this).modalForm({ formURL: $(this).data('id') });
+        })
+
+        $(".join-task").each(function () {
+            $(this).modalForm({ formURL: $(this).data('id') });
+        })
+
+    });
+</script>
+{% endblock scripts %}

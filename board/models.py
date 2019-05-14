@@ -2,6 +2,15 @@ from django.db import models
 from django.contrib.auth.models import User
 from django.urls import reverse
 # Create your models here.
+
+class Board(models.Model):
+    name = models.CharField(max_length=200, default = ' ')
+    image = models.ImageField(default='default-board.jpg', upload_to='board-imgs')
+
+    def __str__(self):
+        return self.name
+
+
 class EventCard(models.Model):
     users = models.ManyToManyField(User)   
     event_name = models.CharField(max_length=50)
@@ -9,6 +18,7 @@ class EventCard(models.Model):
     big_description = models.CharField(max_length=10000,default=' ')
     date = models.DateTimeField('Data do Evento')
     room = models.CharField(max_length=200)
+    board = models.ForeignKey(Board, on_delete = models.CASCADE, null=True, blank=True)
 
     def __str__(self):
         return self.event_name
@@ -16,15 +26,15 @@ class EventCard(models.Model):
     def get_absolute_url(self):
         return reverse('event-detail', kwargs={'pk':self.pk})
 
-
+class Attachment(models.Model):
+    file = models.FileField(upload_to='attachment_files')
+    event = models.ForeignKey(EventCard, on_delete = models.CASCADE, null=True, blank=True)
 
 class Task(models.Model):
     event = models.ForeignKey(EventCard, on_delete = models.CASCADE, null=True, blank=True)
     description = models.CharField(max_length=200)
     users = models.ManyToManyField(User) 
+    isCompleted = models.BooleanField(default = False)
 
     def __str__(self):
         return self.description
-
-
-

@@ -1,0 +1,12 @@
+{% extends "board/base.html" %}
+{% load static %}
+{% block content %}
+<form method="post" action="">
+    {% csrf_token %}
+
+    <div class="modal-footer">
+        <button type="submit" class="submit-btn btn btn-primary">Yes</button>
+    </div>
+
+</form>
+{% endblock content %}

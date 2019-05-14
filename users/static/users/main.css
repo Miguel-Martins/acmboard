@@ -3,7 +3,7 @@ html {
     margin: 0;
     padding: 0;
     height: 100%;
-    background-color: #005F9F!important;
+    background-color: #005F9F;
 }
 
 .user_card {
@@ -40,7 +40,7 @@ html {
 }
 
 .login_btn {
-    width: 100%;
+    width: auto;
     background: #005F9F !important;
     color: white !important;
 }
@@ -68,6 +68,11 @@ html {
     box-shadow: none !important;
     outline: 0px !important;
 }
-.custom-checkbox .custom-control-input:checked~.custom-control-label::before {
-    background-color: #005F9F !important;
+
+.task {
+    background: #005F9F !important;
+    color: white !important;
+    padding: 0px 5px 3px 5px;
+    border-radius: 3px;
+    width: 80%;
 }

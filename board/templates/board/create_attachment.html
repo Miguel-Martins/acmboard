@@ -1,0 +1,22 @@
+{% extends "users/base.html" %}
+{% load crispy_forms_tags %}
+{% load static %}
+{% block content %}
+<div class="container h-100">
+	<div class="d-flex justify-content-center h-100">
+		<div class="user_card">
+			<div class="d-flex justify-content-center">
+				<form method="POST" action="" class="text-center mb-0" enctype="multipart/form-data">
+					<img src="{% static "users/ACM_Logo.svg" %}" class="brand_logo" alt="Logo">
+					{% csrf_token %}
+					{{form.as_p}}
+					<div class="d-flex justify-content-center login_container ">
+						<button type="submit" name="button" class="btn login_btn">Create</button>
+					</div>
+					<a href="{% url 'events' %}" class="ml-2">Cancel</a>
+				</form>
+			</div>
+		</div>
+	</div>
+</div>
+{% endblock content %}

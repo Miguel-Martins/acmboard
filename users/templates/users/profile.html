@@ -1,9 +1,50 @@
 {% extends "board/base.html" %}
+{% load crispy_forms_tags %}
+{% load static %}
 {% block content %}
-<div class="board">
-    <div class="list">
-        <img class="rounded-circle account-img" src="{{ user.profile.image.url }}">
-        <h1>{{ user.first_name }} {{ user.last_name }}</h1>
-    </div>
+<img src="{{user.profile.image.url}}" alt="Profile Picture">
+<h1><i class="fas fa-user-circle"></i>{{user.username}}</h1>
+<h1><i class="fas fa-tag"></i>{{user.first_name}} {{user.last_name}} </h1>
+<h1><i class="far fa-envelope"></i>{{user.email}}</h1>
+<div class="form-group">
+    <button type="button" class="update-user btn btn-success" data-id="{% url 'user_update' user.pk %}">Update User</button>
 </div>
 {% endblock content %}
+{% block scripts %}
+<script type="text/javascript">
+    $(document).ready(function () {
+        // Update User Button
+        $(".update-user").each(function () {
+            $(this).modalForm({ formURL: $(this).data('id') });
+        });
+    });
+</script>
+{% endblock scripts %}
+<!--
+<div class="profile-card">
+    <div class="row ml-5">
+        <div class="col-sm-10">
+            <div class="media pt-5">
+                <img class="rounded-circle" src="{{ user.profile.image.url }}">
+                <div class="media-body">
+                    <h2 class="account-heading">{{ user.username }}</h2>
+                    <p class="text-secondary">{{ user.email }}</p>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="row ml-5">
+        <form method="post" enctype="multipart/form-data">
+            {% csrf_token %}
+            <fieldset class="form-group">
+                <legend class="border-bottom mb-4">Profile Info</legend>
+                {{ u_form|crispy }}
+                {{ p_form|crispy }}
+            </fieldset>
+            <div class="form-group">
+                <button class="btn btn-success" type="submit">Update</button>
+            </div>
+        </form>
+    </div>
+</div>
+-->

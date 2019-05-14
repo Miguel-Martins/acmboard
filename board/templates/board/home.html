@@ -1,30 +1,54 @@
 {% extends "board/base.html" %}
 {% block content %}
-<div class="board">
+<div class="lists-container">
     {% if events %}
     {% for event in events %}
     <div class="list">
-        <ul>
-            <header><a href="{% url 'event-detail' event.id %}"> {{ event.event_name }} </a></header>
-            <h1> {{  event.small_description }} </h1>
+        <h3 class="list-title mb-0"><a href="{% url 'event-detail' event.id %}"> {{ event.event_name }} </a></h3>
+        <h5 class="ml-3"> {{  event.small_description }} </h5>
+        <ul class="list-items">
             {% if event.task_set.all %}
-                <h2>Tasks</h2>
                 {% for eventkey, tasks in tasklist.items %}
                     {% if eventkey == event.event_name %}
+                    {% if tasks %}
+                        <h4 class="ml-2">To-Do List</h4>
+                    {% else %}
+                        <h5 class="ml-2">No Tasks!</h5>
+                    {% endif %}
                         {% for task in tasks %}
-                            <a>
-                                <li>{{ task.description }}</li>
-                            </a>
+                        <a class="leave-task ml-1" data-id="{% url 'leave_task' task.pk %}">
+                            <li>{{ task.description }}</li>
+                        </a>    
                         {% endfor %}
                     {% endif %}
                 {% endfor %}
             {% endif %}
-
+            <button type="button" class="leave-event btn btn-danger ml-1" data-id="{% url 'leave_event' event.pk %}">
+                <span class="fas fa-sign-out-alt mr-2"></span>Leave Event</button>
         </ul>
     </div>
     {% endfor %}
     {% else %}
-    <p> You're not in any event at the moment! </p>
+    <div class="list-trello">
+        <h3 class="list-title mb-0">No Events!</h3>
+    </div>
     {%endif%}
 </div>
 {% endblock content %}
+
+{% block scripts %}
+<script type="text/javascript">
+    $(document).ready(function () {
+
+        // Task Creation Button
+        $(".leave-event").each(function () {
+            $(this).modalForm({ formURL: $(this).data('id') });
+        })
+
+        $(".leave-task").each(function () {
+            $(this).modalForm({ formURL: $(this).data('id') });
+        })
+
+    });
+</script>
+{% endblock scripts %}

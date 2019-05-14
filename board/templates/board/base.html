@@ -16,28 +16,62 @@
 </head>
 
 <body>
-
-    <nav class="menu">
-        <span class="hambgr"></span>
-        <ul>
-            <li> <a href="{% url 'profile' %}">Profile</a> </li>
-            <li> <a href="{% url 'home' %}">Home</a> </li>
-            <li> <a href="{% url 'events' %}">Events</a> </li>
-            {% if user.is_superuser %}
-            <li> <a href="{% url 'event-create' %}">Create Event</a> </li>
-            {% endif %}
-            <li> <a href="{% url 'logout' %}">Logout</a> </li>
-        </ul>
+    {% block navbar %}
+    <nav class="navbar navbar-expand-lg fixed-top navbar-dark bg-primary">
+        <a class="navbar-brand" href="{% url 'home' %}">
+            <img class="rounded-circle" src="{% static "users/ACM_Logo.svg" %}" alt=""> ACMBoard
+        </a>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarSupportedContent">
+            <ul class="navbar-nav mr-auto">
+                <li class="nav-item active">
+                    <a class="nav-link waves-effect waves-light" href="{% url 'profile' %}">Profile <span
+                            class="sr-only">(current)</span></a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link waves-effect waves-light" href="{% url 'events' %}">Events</a>
+                </li>
+                {% if user.is_superuser %}
+                <li class="nav-item">
+                    <a class="nav-link waves-effect waves-light" href="{% url 'event-create' %}">Create Event</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link waves-effect waves-light" href="{% url 'board-create' %}">Create Board</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link waves-effect waves-light" href="#">Edit Boards</a>
+                </li>
+                {% endif %}
+                <li class="nav-item">
+                    <a class="nav-link waves-effect waves-light" href="{% url 'logout' %}">Logout</a>
+                </li>
+            </ul>
+        </div>
     </nav>
+    {% endblock navbar %}
     {% if messages %}
     {% for message in messages %}
-    <div class="ml-5 alert alert-{{ message.tags }}">
+    <div class="board alert alert-{{ message.tags }}">
         {{ message }}
     </div>
     {% endfor %}
     {% endif %}
-    {% block content %}
-    {% endblock content %}
+    <div class="ml-3 mr-3 mt-5 pt-5 pr-5">
+        {% block content %}
+        {% endblock content %}
+        {% block modal %}
+        <div class="modal fade" tabindex="-1" role="dialog" id="modal">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
+
+                </div>
+            </div>
+        </div>
+        {% endblock modal %}
+    </div>
     <script src="https://code.jquery.com/jquery-3.2.1.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"
         integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q"
@@ -51,3 +85,17 @@
 </body>
 
 </html>
+
+
+<!--<nav class="menu">
+        <span class="hambgr"></span>
+        <ul>
+            <li> <a href="{% url 'profile' %}">Profile</a> </li>
+            <li> <a href="{% url 'home' %}">Home</a> </li>
+            <li> <a href="{% url 'events' %}">Events</a> </li>
+            {% if user.is_superuser %}
+            <li> <a href="{% url 'event-create' %}">Create Event</a> </li>
+            {% endif %}
+            <li> <a href="{% url 'logout' %}">Logout</a> </li>
+        </ul>
+    </nav>-->

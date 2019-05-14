@@ -1,69 +1,45 @@
 {% extends "board/base.html" %}
 {% load static %}
 {% block content %}
-<div class="board justify-content-center">
+<div class="lists-container">
     <div class="list">
-        <ul>
-            <header> {{ object.event_name }} </header>
-            <h1> {{  object.small_description }} </h1>
-            <p> {{  object.big_description }} </p>
-            <small> {{  object.date }} </small>
-            <small> {{  object.room }} </small>
-            <h2>Tasks</h2>
-
-            <div class="container">
-                {% for task in object.task_set.all %}
-                <div class="input-group mb-3 justify-content-center">
-                    <li class="list-group-item mb-1 mr-1">{{ task.description }} </li>
-                    {% if user.is_superuser %}
-                    <div class="input-group-append float-right">
-                        <button class="delete-task btn login_btn btn-primary" type="button" name="button"
-                            data-id="{% url 'delete_task' task.pk %}">
-                            <span class="far fa-trash-alt mr-2 mt-1"></span>
-                        </button>
-                    </div>
-                    {% endif %}
-                    {% endfor %}
+        <h3 class="list-title">{{ object.event_name }}</h3>
+        <h3 class="list-title">{{ object.small_description }}</h3>
+        <h4 class="list-title">{{ object.big_description }}</h4>
+        <h4 class="ml-2">Tasks</h4>
+        <ul class="list-items">
+            {% for task in object.task_set.all %}
+            <div class="input-group mb-3">
+                <li class="w-75">{{ task.description }}</li>
+                {% if user.is_superuser %}
+                <div class="input-group-append w-25">
+                    <button class="delete-task btn btn-primary" type="button" name="button"
+                        data-id="{% url 'delete_task' task.pk %}"><i class="fas fa-trash-alt"></i>
+                    </button>
                 </div>
+                {% endif %}
             </div>
+            {% endfor %}
             {% if user.is_superuser %}
             <div class="container btn-group mt-2">
-                <button type="button" class="update-event btn login_btn btn-primary mr-1"
+                <button type="button" class="update-event btn btn-primary mr-1"
                     data-id="{% url 'update_event' eventcard.pk %}">
                     <span class="fas fa-edit mr-2"></span>Update Event</button>
-                <button type="button" class="delete-event btn login_btn btn-primary ml-1" data-id="{% url 'delete_event' eventcard.pk %}">
+                <button type="button" class="delete-event btn btn-primary ml-1"
+                    data-id="{% url 'delete_event' eventcard.pk %}">
                     <span class=" far fa-trash-alt mr-2"></span>Delete Event</button>
             </div>
-            <div class="col-12 mt-2">
-                <button class="create-task btn login_btn btn-primary mb-1" type="button" name="button">
+            <div class="container btn-group mt-2">
+                <button class="create-task btn btn-primary mb-1 pl-5 pr-5" type="button" name="button">
                     <span class="fa fa-plus mr-2"></span>Create task</button>
             </div>
             {% endif %}
         </ul>
     </div>
 </div>
-
-<div class="modal fade" tabindex="-1" role="dialog" id="modal">
-    <div class="modal-dialog" role="document">
-        <div class="modal-content">
-
-        </div>
-    </div>
-</div>
-
 {% endblock content %}
 
 {% block scripts %}
-<script type="text/javascript">
-    $(document).ready(function () {
-
-        $(".create-task").modalForm({
-            formURL: "{% url 'create_task' pk=object.id %}"
-        });
-
-    });
-</script>
-
 <script type="text/javascript">
     $(document).ready(function () {
 
@@ -90,21 +66,3 @@
     });
 </script>
 {% endblock scripts %}
-
-
-<!--
-<div class="container list-group">
-    {% for task in object.task_set.all %}
-    <div input-group mb-1>
-        <li>{{ task.description }}</li>
-        <div class="float-right ">
-            <button class="delete-task btn login_btn btn-primary btn-sm" type="button" name="button"
-                data-id="{% url 'delete_task' task.pk %}">
-                <span class="far fa-trash-alt mr-2 mt-1"></span>
-            </button>
-        </div>
-    </div>
-    {% endfor %}
-</div>
-
--->
