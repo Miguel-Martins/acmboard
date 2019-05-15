@@ -1,0 +1,83 @@
+{% extends "board/base.html" %}
+{% block content %}
+<div class="container border border-dark rounded bg-light p-3">
+    <div class="media">
+        <img class="border border-dark rounded-circle" src="{{user.profile.image.url}}" alt="Profile Picture">
+        <div class="media-body ml-2">
+            <h1 class="account-heading"><i class="text-primary mr-1 fas fa-user-circle"></i>{{user.username}}</h2>
+            <h2 class="account-heading"><i class="text-primary mr-1 fas fa-tag"></i>{{user.first_name}} {{user.last_name}} </h2>
+            <h2 class="account-heading"><i class="text-primary mr-1 far fa-envelope"></i>{{user.email}}</h2>
+            <div class="button-group mt-3">
+                <button type="button" class="update-user btn btn-primary" data-id="{% url 'user_update' user.pk %}">Update
+                    User</button>
+                <button type="button" class="update-profile btn btn-primary"
+                    data-id="{% url 'user_profile_update' user.pk %}">Update
+                    Profile</button>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="container border border-dark rounded bg-light p-3 mt-4 mb-5">
+    <h2>All Your Events</h2>
+    <div class="list-flex-container mt-5 p-3">
+        {% if events %}
+        {% for event in events %}
+        <div class="list">
+            <h3 class="list-title mb-0"><a href="{% url 'event-detail' event.id %}"> {{ event.event_name }} </a></h3>
+            <h5 class="ml-3"> {{  event.small_description }} </h5>
+            <ul class="list-items">
+                {% if event.task_set.all %}
+                {% for eventkey, tasks in tasklist.items %}
+                {% if eventkey == event.event_name %}
+                {% if tasks %}
+                <h4 class="ml-2">To-Do List</h4>
+                {% else %}
+                <h5 class="ml-2">Nothing to do!</h5>
+                {% endif %}
+                {% for task in tasks %}
+                <a class="leave-task ml-1" data-id="{% url 'leave_task' task.pk %}">
+                    <li>{{ task.description }}</li>
+                </a>
+                {% endfor %}
+                {% endif %}
+                {% endfor %}
+                {% endif %}
+                <button type="button" class="leave-event btn btn-danger ml-1"
+                    data-id="{% url 'leave_event' event.pk %}">
+                    <span class="fas fa-sign-out-alt mr-2"></span>Leave Event</button>
+            </ul>
+        </div>
+        {% endfor %}
+        {% else %}
+        <div class="list-trello">
+            <h3 class="list-title mb-0">No Events!</h3>
+        </div>
+        {%endif%}
+    </div>
+</div>
+{% endblock content %}
+
+{% block scripts %}
+<script type="text/javascript">
+    $(document).ready(function () {
+
+        // Task Creation Button
+        $(".leave-event").each(function () {
+            $(this).modalForm({ formURL: $(this).data('id') });
+        })
+
+        $(".leave-task").each(function () {
+            $(this).modalForm({ formURL: $(this).data('id') });
+        })
+
+        $(".update-user").each(function () {
+            $(this).modalForm({ formURL: $(this).data('id') });
+        });
+
+        $(".update-profile").each(function () {
+            $(this).modalForm({ formURL: $(this).data('id') });
+        });
+
+    });
+</script>
+{% endblock scripts %}
