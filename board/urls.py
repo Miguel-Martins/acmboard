@@ -19,8 +19,11 @@ urlpatterns = [
     path('event/<int:pk>/leave_event/', board_views.LeaveEventView.as_view(), name='leave_event'),
     path('event/<int:pk>/join_task/', board_views.JoinTaskView.as_view(), name='join_task'),
     path('event/<int:pk>/leave_task/', board_views.LeaveTaskView.as_view(), name='leave_task'),
-    path('board/new', board_views.BoardCreateView.as_view(), name='board-create'),
     path('event/<int:pk>/<board>/join', board_views.AddEventToBoard.as_view(), name='event-to-board'),
+    path('event/<int:pk>/<board>/leave', board_views.RemoveEventFromBoard.as_view(), name='event-away-board'),
     path('event/<int:pk>/add_attachment', board_views.CreateAttachment.as_view(), name='add_attachment'),
+    path('events/board/new', board_views.BoardCreateView.as_view(), name='board-create'),
+    path('events/board/delete/<int:pk>', board_views.BoardDeleteView.as_view(), name='delete_board'),
+    path('events/delete_attachment/<int:pk>', board_views.AttachmentDeleteView.as_view(), name='delete_attachment'),
 
 ]

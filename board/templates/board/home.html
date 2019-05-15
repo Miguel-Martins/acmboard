@@ -13,7 +13,7 @@
                     {% if tasks %}
                         <h4 class="ml-2">To-Do List</h4>
                     {% else %}
-                        <h5 class="ml-2">No Tasks!</h5>
+                        <h5 class="ml-2">Nothing to do!</h5>
                     {% endif %}
                         {% for task in tasks %}
                         <a class="leave-task ml-1" data-id="{% url 'leave_task' task.pk %}">

@@ -6,18 +6,23 @@
     <div class="list">
         <ul class="list-items">
             <h3 class="list-title"> {{b.name}}
+                {% if user.is_superuser %}
                 <div class="btn-group dropleft float-right">
-                    <button class="btn btn-primary dropdown-toggle" type="button" id="dropdownMenuButton"
-                        data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                        <i class="fa fa-plus fa-fw"></i>
+                    <button class="delete-board btn btn-danger mr-1" data-id="{% url 'delete_board' b.pk %}"
+                        type="button" name="button">
+                        <span class="fas fa-trash-alt"></span></button>
+                    <button class="btn btn-primary  ml-1" type="button" id="dropdownMenuButton" data-toggle="dropdown"
+                        aria-haspopup="true" aria-expanded="false">
+                        <i class="fas fa-chevron-down fa-fw"></i>
                     </button>
                     <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
                         {% for event in events %}
-                        <a class="dropdown-item"
-                            href="{% url 'event-to-board' pk=event.id board=b.id %}">{{ event.event_name }}</a>
+                        <a class="dropdown-item event-to-board ml-1"
+                            data-id="{% url 'event-to-board' pk=event.id board=b.id %}">{{ event.event_name }}</a>
                         {%endfor%}
                     </div>
                 </div>
+                {% endif%}
             </h3>
             <img class="" height="300" src="{{b.image.url}}" alt="Banner">
         </ul>
@@ -26,28 +31,53 @@
 
     {% for event in b.eventcard_set.all %}
     <div class="list">
-        <h3 class="list-title mb-0"><a href="{% url 'event-detail' event.id %}"> {{ event.event_name }} </a>
-            <div class="progress">
-                <div class="progress-bar" role="progressbar" style="width:{{ event.get_percentage }}%;"></div>
+        <h3 class="list-title mb-0"><a href="{% url 'event-detail' event.id %}"> {{ event.event_name }}</a>
+            {% if user.is_superuser %}
+            <div class="btn-group float-right">
+                <button class="event-away-board btn btn-danger mr-1" data-id="{% url 'event-away-board' pk=event.id board=b.id %}" type="button"
+                    name="button">
+                    <i class="fas fa-minus"></i></button>
             </div>
+            {% endif %}
         </h3>
+        <div class="progress ml-1 mr-1">
+            <div class="progress-bar" role="progressbar" style="width:{{ event.get_percentage }}%;"></div>
+        </div>
         <h5 class="ml-3"> {{  event.small_description }} </h5>
         <ul class="list-items">
             {% if event.task_set.all %}
             <h4 class="ml-2">Tasks</h4>
             {% for task in event.task_set.all %}
-            <a class="join-task ml-1" data-id="{% url 'join_task' task.pk %}">
-                <li>{{ task.description }}</li>
+            <a {% if not task.isCompleted %} class="join-task ml-1" data-id="{% url 'join_task' task.pk %}" {% endif %}>
+                <li class="{% if task.isCompleted %}task-completed{% endif %} ">{{ task.description }}
+                    {% if task.isCompleted %}
+                    <div class="float-right">
+                        <i class="fas fa-check"></i>
+                    </div>
+                    {% else %}
+                    <div class="float-right">
+                        <i class="fas fa-hourglass"></i>
+                    </div>
+                    {% endif %}
+                </li>
             </a>
             {% endfor %}
             {% else %}
             <h5 class="ml-2">No Tasks!</h5>
             {% endif %}
-            <h4 class="mt-2 ml-2">Attachments<a href="{% url 'add_attachment' event.id %}"><button type="button"
-                        class="btn btn-sm btn-primary ml-1">
-                        <span class="fa fa-plus fa-fw"></span></button></a></h4>
+            <h4 class="mt-2 ml-2">Attachments<button data-id="{% url 'add_attachment' event.id %}" type="button"
+                    class="btn btn-sm btn-primary create-attachment ml-1">
+                    <span class="fa fa-plus fa-fw"></span></button></a></h4>
             {% for a in event.attachment_set.all %}
-            <a class="m-1" href="{{a.file.url}}">{{a.file.name}}</a>
+            {% if user.is_superuser %}
+            <div class="mt-1">
+                <button data-id="{% url 'delete_attachment' a.id %}" class='btn-primary btn delete-attachment'><i
+                        class="fas fa-minus"></i></button>
+                {% endif %}
+                <a class="m-1" href="{{a.file.url}}">
+                    {{a.file.name}}
+                </a>
+            </div>
             {% endfor %}
             <button type="button" class="join-event btn btn-primary ml-1 mt-2"
                 data-id="{% url 'join_event' pk=event.pk %}">
@@ -55,11 +85,34 @@
         </ul>
     </div>
     {% endfor %}
-    {% else %}
-    <h3 class="list-title mb-0">There are no events at the moment</h3>
     {%endif%}
 </div>
 {% endfor %}
+{% if user.is_superuser %}
+<div class="lists-container">
+    <div class="list">
+        <ul class="list-items">
+            <h3 class="list-title"> Create New Board
+                <div class="btn-group float-right">
+                    <button class="create-board btn btn-primary" type="button" name="button">
+                        <span class="fa fa-plus mr-2"></span></button>
+                </div>
+            </h3>
+            <img class="" height="300" src="../../../media/board-imgs/blank.jpeg" alt="Banner">
+        </ul>
+    </div>
+    <div class="list">
+        <ul class="list-items pb-0">
+            <h3 class="list-title pb-0"> Create New Event
+                <div class="btn-group float-right">
+                    <button class="create-event btn btn-primary" type="button" name="button">
+                        <span class="fa fa-plus mr-2"></span></button>
+                </div>
+            </h3>
+        </ul>
+    </div>
+</div>
+{% endif %}
 {% endblock content %}
 
 {% block scripts %}
@@ -72,6 +125,34 @@
         })
 
         $(".join-task").each(function () {
+            $(this).modalForm({ formURL: $(this).data('id') });
+        })
+
+        $(".create-board").modalForm({
+            formURL: "{% url 'board-create' %}"
+        });
+
+        $(".create-event").modalForm({
+            formURL: "{% url 'event-create' %}"
+        });
+
+        $(".delete-board").each(function () {
+            $(this).modalForm({ formURL: $(this).data('id') });
+        })
+
+        $(".event-to-board").each(function () {
+            $(this).modalForm({ formURL: $(this).data('id') });
+        })
+
+        $(".event-away-board").each(function () {
+            $(this).modalForm({ formURL: $(this).data('id') });
+        })
+        
+        $(".create-attachment").each(function () {
+            $(this).modalForm({ formURL: $(this).data('id') });
+        })
+
+        $(".delete-attachment").each(function () {
             $(this).modalForm({ formURL: $(this).data('id') });
         })
 

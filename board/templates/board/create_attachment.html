@@ -1,22 +1,22 @@
-{% extends "users/base.html" %}
-{% load crispy_forms_tags %}
-{% load static %}
-{% block content %}
-<div class="container h-100">
-	<div class="d-flex justify-content-center h-100">
-		<div class="user_card">
-			<div class="d-flex justify-content-center">
-				<form method="POST" action="" class="text-center mb-0" enctype="multipart/form-data">
-					<img src="{% static "users/ACM_Logo.svg" %}" class="brand_logo" alt="Logo">
-					{% csrf_token %}
-					{{form.as_p}}
-					<div class="d-flex justify-content-center login_container ">
-						<button type="submit" name="button" class="btn login_btn">Create</button>
-					</div>
-					<a href="{% url 'events' %}" class="ml-2">Cancel</a>
-				</form>
-			</div>
+<form method="post" action="" enctype="multipart/form-data">
+	{% csrf_token %}
+
+	<div class="modal-header">
+		<h5 class="modal-title">Create New Attachment</h5>
+		<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+			<span aria-hidden="true">&times;</span>
+		</button>
+	</div>
+
+	<div class="modal-body">
+		<div class="form-group">
+			<input type="file" name="file" id="id_file">
 		</div>
 	</div>
-</div>
-{% endblock content %}
+
+	<div class="modal-footer">
+		<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+		<button type="button" class="submit-btn btn btn-primary">Create</button>
+	</div>
+
+</form>

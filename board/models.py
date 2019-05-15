@@ -1,6 +1,7 @@
 from django.db import models
 from django.contrib.auth.models import User
 from django.urls import reverse
+from django.core.exceptions import ValidationError
 # Create your models here.
 
 class Board(models.Model):
@@ -16,7 +17,7 @@ class EventCard(models.Model):
     event_name = models.CharField(max_length=50)
     small_description = models.CharField(max_length=500,default=' ')
     big_description = models.CharField(max_length=10000,default=' ')
-    date = models.DateTimeField('Data do Evento')
+    date = models.DateTimeField()
     room = models.CharField(max_length=200)
     board = models.ForeignKey(Board, on_delete = models.CASCADE, null=True, blank=True)
 
@@ -39,8 +40,12 @@ class EventCard(models.Model):
 
 
 class Attachment(models.Model):
-    file = models.FileField(upload_to='attachment_files')
+    file = models.FileField(upload_to='attachment_files', null=False, blank=True)
     event = models.ForeignKey(EventCard, on_delete = models.CASCADE, null=True, blank=True)
+
+    def clean(self):
+        if not self.file.name:
+            raise ValidationError('Error With File')
 
 class Task(models.Model):
     event = models.ForeignKey(EventCard, on_delete = models.CASCADE, null=True, blank=True)

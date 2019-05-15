@@ -1,9 +1,9 @@
 :root {
   font-size: 15px;
 }
-html, body{ 
-  height: 100%;
-  background-color:#63b7ee!important;
+body,html{
+  background-color: #2cb5e8!important;
+  background: linear-gradient(141deg, #9fb8ad 0%, #1fc8db 51%, #2cb5e8 75%)no-repeat center center fixed;
 }
 
 .lists-container {
@@ -76,4 +76,9 @@ html, body{
 .profile-card {
   background-color: #e2e4e6;
   border-radius: 0.3rem;
+}
+
+.task-completed {
+    background-color: rgb(86, 173, 74)!important;
+    color:#fff!important;
 }

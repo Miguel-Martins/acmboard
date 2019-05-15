@@ -6,7 +6,7 @@ from django.contrib.auth.models import User
 from django.contrib.auth.decorators import login_required
 from .models import EventCard, Task, Board, Attachment
 
-from .forms import TaskForm, EventCardForm, EventJoinForm, TaskJoinForm
+from .forms import TaskForm, EventCardForm, EventJoinForm, TaskJoinForm, BoardForm, BoardDeleteForm, AttachmentForm, AttachmentDeleteForm
 from bootstrap_modal_forms.generic import BSModalCreateView, BSModalUpdateView, BSModalDeleteView
 
 
@@ -36,19 +36,13 @@ class EventDetailView(LoginRequiredMixin, DetailView):
     model = EventCard
 
 
-class EventCreateView(LoginRequiredMixin, CreateView):
+class EventCreateView(LoginRequiredMixin, BSModalCreateView):
     model = EventCard
-    fields = ['event_name', 'small_description',
-              'big_description', 'date', 'room']
-
-    def form_valid(self, form):
-        self.object = form.save()
-        self.object.users.add(self.request.user)
-        self.object.save()
-        return super().form_valid(form)
+    form_class = EventCardForm
+    template_name = 'board/eventcard_form.html'
 
 
-class TaskCreateView(BSModalCreateView):
+class TaskCreateView(LoginRequiredMixin, BSModalCreateView):
     template_name = 'board/create_task.html'
     form_class = TaskForm
     success_url = reverse_lazy('events')
@@ -61,7 +55,7 @@ class TaskCreateView(BSModalCreateView):
         self.object.save()
         return super().form_valid(form)
 
-class TaskDeleteView(BSModalDeleteView):
+class TaskDeleteView(LoginRequiredMixin, BSModalDeleteView):
     model = Task
     template_name = 'board/delete_task.html'
     success_message = 'Success: Task was deleted.'
@@ -73,7 +67,7 @@ class ModalEventEditView(LoginRequiredMixin, BSModalUpdateView):
     form_class = EventCardForm
     success_url = reverse_lazy('events')
 
-class ModalEventDeleteView(BSModalDeleteView):
+class ModalEventDeleteView(LoginRequiredMixin, BSModalDeleteView):
     model = EventCard
     template_name = 'board/delete_event.html'
     success_message = 'Success: Event was deleted.'
@@ -110,6 +104,7 @@ class JoinTaskView(LoginRequiredMixin, BSModalUpdateView):
     template_name = 'board/confirm.html'
     form_class = TaskJoinForm
     submitBtn = ".join-task"
+    success_message = 'Success: You now have a new task!'
     success_url = reverse_lazy('home')
 
     def form_valid(self, form):
@@ -124,6 +119,7 @@ class LeaveTaskView(LoginRequiredMixin, BSModalUpdateView):
     template_name = 'board/confirm.html'
     form_class = TaskJoinForm
     submitBtn = ".leave-task"
+    success_message = 'Success: Task was completed.'
     success_url = reverse_lazy('home')
 
     def form_valid(self, form):
@@ -133,28 +129,51 @@ class LeaveTaskView(LoginRequiredMixin, BSModalUpdateView):
             form.instance.save()
         return super().form_valid(form)
 
-class BoardCreateView(LoginRequiredMixin, CreateView):
-    model = Board
-    fields = ['name', 'image']
-    
-    success_url=reverse_lazy('home')
+class BoardCreateView(LoginRequiredMixin, BSModalCreateView):
+    template_name='board/board_form.html'
+    form_class = BoardForm
+    success_message = 'Success: Board was created.'
+    success_url=reverse_lazy('events')
 
-class AddEventToBoard(LoginRequiredMixin, UpdateView):
+class BoardDeleteView(LoginRequiredMixin, BSModalDeleteView):
+    model = Board
+    template_name = 'board/delete_board.html'
+    success_message = 'Success: Board was deleted.'
+    success_url = reverse_lazy('events')
+
+class AddEventToBoard(LoginRequiredMixin, BSModalUpdateView):
     model = EventCard
     template_name='board/add_event_board.html'
-    fields=[]
-    success_url = reverse_lazy('home')
+    form_class = EventJoinForm
+    success_url = reverse_lazy('events')
 
     def form_valid(self, form):
         form.instance.board = get_object_or_404(Board,pk=self.kwargs['board'])
         return super().form_valid(form)
 
-class CreateAttachment(LoginRequiredMixin, CreateView):
+class RemoveEventFromBoard(LoginRequiredMixin, BSModalUpdateView):
+    model = EventCard
+    template_name='board/confirm.html'
+    form_class = EventJoinForm
+    success_url = reverse_lazy('events')
+
+    def form_valid(self, form):
+        form.instance.board = None
+        return super().form_valid(form)
+        
+class CreateAttachment(LoginRequiredMixin, BSModalCreateView):
     model = Attachment
-    fields=['file']
+    form_class = AttachmentForm
     template_name = 'board/create_attachment.html'
     success_url = reverse_lazy('events')
 
     def form_valid(self, form):
         form.instance.event = get_object_or_404(EventCard, pk=self.kwargs['pk'])
         return super().form_valid(form)
+
+class AttachmentDeleteView(LoginRequiredMixin, BSModalDeleteView):
+    model = Attachment
+    form_class = AttachmentDeleteForm
+    template_name = 'board/confirm.html'
+    success_url = reverse_lazy('events')
+    success_message = 'Success: Attachment was deleted.'
