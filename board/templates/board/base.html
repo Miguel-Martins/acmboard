@@ -27,12 +27,9 @@
         </button>
         <div class="collapse navbar-collapse" id="navbarSupportedContent">
             <ul class="navbar-nav mr-auto">
-                <li class="nav-item active">
-                    <a class="nav-link waves-effect waves-light" href="{% url 'profile' %}">Profile <span
-                            class="sr-only">(current)</span></a>
-                </li>
                 <li class="nav-item">
-                    <a class="nav-link waves-effect waves-light" href="{% url 'events' %}">Events</a>
+                    <a class="nav-link waves-effect waves-light" href="{% url 'events' %}">Events<span
+                        class="sr-only">(current)</span></a>
                 </li>
                 <li class="nav-item">
                     <a class="nav-link waves-effect waves-light" href="{% url 'logout' %}">Logout</a>
@@ -67,17 +64,3 @@
 </body>
 
 </html>
-
-
-<!--<nav class="menu">
-        <span class="hambgr"></span>
-        <ul>
-            <li> <a href="{% url 'profile' %}">Profile</a> </li>
-            <li> <a href="{% url 'home' %}">Home</a> </li>
-            <li> <a href="{% url 'events' %}">Events</a> </li>
-            {% if user.is_superuser %}
-            <li> <a href="{% url 'event-create' %}">Create Event</a> </li>
-            {% endif %}
-            <li> <a href="{% url 'logout' %}">Logout</a> </li>
-        </ul>
-    </nav>-->

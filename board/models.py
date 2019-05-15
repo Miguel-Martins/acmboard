@@ -17,8 +17,6 @@ class EventCard(models.Model):
     event_name = models.CharField(max_length=50)
     small_description = models.CharField(max_length=500,default=' ')
     big_description = models.CharField(max_length=10000,default=' ')
-    date = models.DateTimeField()
-    room = models.CharField(max_length=200)
     board = models.ForeignKey(Board, on_delete = models.CASCADE, null=True, blank=True)
 
     def __str__(self):

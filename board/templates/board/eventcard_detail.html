@@ -1,8 +1,8 @@
 {% extends "board/base.html" %}
 {% load static %}
 {% block content %}
-<div class="list">
-    <h3 class="list-title">Title: {{ object.event_name }}</h3>
+<div class="container bg-light p-3">
+    <h1 class="list-title">Title: {{ object.event_name }}</h1>
     <h3 class="list-title">Descriptions: {{ object.small_description }}</h3>
     <h4 class="list-title">Details: {{ object.big_description }}</h4>
     <h4 class="ml-3">Tasks</h4>

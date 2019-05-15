@@ -25,7 +25,6 @@ class EventListView(LoginRequiredMixin, ListView):
     model = EventCard
     template_name = 'board/events.html'
     context_object_name = 'events'
-    ordering = ['date']
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
@@ -160,7 +159,7 @@ class RemoveEventFromBoard(LoginRequiredMixin, BSModalUpdateView):
     def form_valid(self, form):
         form.instance.board = None
         return super().form_valid(form)
-        
+
 class CreateAttachment(LoginRequiredMixin, BSModalCreateView):
     model = Attachment
     form_class = AttachmentForm
@@ -173,7 +172,6 @@ class CreateAttachment(LoginRequiredMixin, BSModalCreateView):
 
 class AttachmentDeleteView(LoginRequiredMixin, BSModalDeleteView):
     model = Attachment
-    form_class = AttachmentDeleteForm
-    template_name = 'board/confirm.html'
+    template_name = 'board/delete_attachment.html'
     success_url = reverse_lazy('events')
     success_message = 'Success: Attachment was deleted.'

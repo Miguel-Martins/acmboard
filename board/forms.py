@@ -10,7 +10,7 @@ class TaskForm(BSModalForm):
 class EventCardForm(BSModalForm):
     class Meta:
         model = EventCard
-        fields = ['event_name', 'small_description', 'big_description', 'date', 'room']
+        fields = ['event_name', 'small_description', 'big_description']
         
 class EventJoinForm(BSModalForm):
     class Meta:

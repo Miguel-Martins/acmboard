@@ -5,6 +5,7 @@ from .forms import UserRegisterForm, UserUpdateForm, ProfileUpdateForm
 
 from django.urls import reverse_lazy
 from board.forms import UserForm
+from users.models import Profile
 from django.contrib.auth.models import User
 from bootstrap_modal_forms.generic import BSModalUpdateView
 
@@ -20,29 +21,15 @@ def register(request):
         form = UserRegisterForm()
     return render(request, 'users/register.html', {'form': form, 'title':'Register'})
 
-@login_required
-def profile(request):
-    if request.method == 'POST':
-        u_form = UserUpdateForm(request.POST, instance=request.user)
-        p_form = ProfileUpdateForm(request.POST, request.FILES, instance=request.user.profile)
-        if u_form.is_valid() and p_form.is_valid():
-            u_form.save()
-            p_form.save()
-            messages.success(request, f'Your account has been updated!')
-            return redirect('profile')
-    else:
-        u_form = UserUpdateForm(instance=request.user)
-        p_form = ProfileUpdateForm(instance=request.user.profile)
-
-        context = {
-            'u_form': u_form,
-            'p_form': p_form
-        }
-
-    return render(request, 'users/profile.html', context)
 
 class UserUpdateView(BSModalUpdateView):
     model = User
     template_name = 'users/update-user.html'
     form_class = UserForm
-    success_url = reverse_lazy('profile')
+    success_url = reverse_lazy('home')
+
+class UserProfileUpdateView(BSModalUpdateView):
+    model = Profile
+    template_name = 'users/update-profile.html'
+    form_class = ProfileUpdateForm
+    success_url = reverse_lazy('home')

@@ -34,8 +34,8 @@
         <h3 class="list-title mb-0"><a href="{% url 'event-detail' event.id %}"> {{ event.event_name }}</a>
             {% if user.is_superuser %}
             <div class="btn-group float-right">
-                <button class="event-away-board btn btn-danger mr-1" data-id="{% url 'event-away-board' pk=event.id board=b.id %}" type="button"
-                    name="button">
+                <button class="event-away-board btn btn-danger mr-1"
+                    data-id="{% url 'event-away-board' pk=event.id board=b.id %}" type="button" name="button">
                     <i class="fas fa-minus"></i></button>
             </div>
             {% endif %}
@@ -69,14 +69,14 @@
                     class="btn btn-sm btn-primary create-attachment ml-1">
                     <span class="fa fa-plus fa-fw"></span></button></a></h4>
             {% for a in event.attachment_set.all %}
-            {% if user.is_superuser %}
             <div class="mt-1">
+                {% if user.is_superuser %}
                 <button data-id="{% url 'delete_attachment' a.id %}" class='btn-primary btn delete-attachment'><i
                         class="fas fa-minus"></i></button>
-                {% endif %}
-                <a class="m-1" href="{{a.file.url}}">
-                    {{a.file.name}}
-                </a>
+            {% endif %}
+            <a class="mt-1" href="{{a.file.url}}">
+                {{a.file.name}}
+            </a>
             </div>
             {% endfor %}
             <button type="button" class="join-event btn btn-primary ml-1 mt-2"
@@ -91,14 +91,13 @@
 {% if user.is_superuser %}
 <div class="lists-container">
     <div class="list">
-        <ul class="list-items">
-            <h3 class="list-title"> Create New Board
+        <ul class="list-items pb-0">
+            <h3 class="list-title pb-0"> Create New Board
                 <div class="btn-group float-right">
                     <button class="create-board btn btn-primary" type="button" name="button">
                         <span class="fa fa-plus mr-2"></span></button>
                 </div>
             </h3>
-            <img class="" height="300" src="../../../media/board-imgs/blank.jpeg" alt="Banner">
         </ul>
     </div>
     <div class="list">
@@ -147,7 +146,7 @@
         $(".event-away-board").each(function () {
             $(this).modalForm({ formURL: $(this).data('id') });
         })
-        
+
         $(".create-attachment").each(function () {
             $(this).modalForm({ formURL: $(this).data('id') });
         })

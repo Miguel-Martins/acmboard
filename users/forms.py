@@ -2,6 +2,7 @@ from django import forms
 from django.contrib.auth.models import User
 from django.contrib.auth.forms import AuthenticationForm, UserCreationForm
 from .models import Profile
+from bootstrap_modal_forms.forms import BSModalForm
 
 class UserRegisterForm(UserCreationForm):
     email = forms.EmailField( widget= forms.EmailInput(attrs={'placeholder':'Email'}))
@@ -29,7 +30,7 @@ class UserUpdateForm(forms.ModelForm):
         model = User
         fields = ['first_name', 'last_name', 'username', 'email']
 
-class ProfileUpdateForm(forms.ModelForm):
+class ProfileUpdateForm(BSModalForm):
     class Meta:
         model = Profile
         fields = ['image']

@@ -1,0 +1,11 @@
+﻿-Criei Class Views para algumas coisas
+Já dá para ir para as páginas individuais de cada Event, usando as Class Views
+from django.contrib.auth.mixins import LoginRequiredMixin é o equivalente do @login_required, mas para as Class Views
+
+Crispy Forms e Django Bootstrap Modal Forms, PILLOW para as imagens
+
+Fazer tarefas ter estado boolean, Done or not done.
+Adicionar "Boards" ou "Groups" e cada modelo tem Eventos
+Eventos têm uma progress bar, para quando todas as tarefas estão Done.
+Anexar ficheiros nos eventos
+

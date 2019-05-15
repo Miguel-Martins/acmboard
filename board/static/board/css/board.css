@@ -6,6 +6,11 @@ body,html{
   background: linear-gradient(141deg, #9fb8ad 0%, #1fc8db 51%, #2cb5e8 75%)no-repeat center center fixed;
 }
 
+.list-flex-container {
+    display: flex;
+    flex-flow: wrap; 
+    align-items: start;
+}
 .lists-container {
     display: flex;
     align-items: start;
