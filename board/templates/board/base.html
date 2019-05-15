@@ -29,16 +29,26 @@
             <ul class="navbar-nav mr-auto">
                 <li class="nav-item">
                     <a class="nav-link waves-effect waves-light" href="{% url 'events' %}">Events<span
-                        class="sr-only">(current)</span></a>
+                            class="sr-only">(current)</span></a>
                 </li>
+            </ul>
+            <ul class="navbar-nav ml-auto">
+                {% if user.is_superuser %}
+                <div class="nav-item">
+                    <a class="nav-link waves-effect waves-light create-board"><i class="fas fa-plus-circle fa-fw mr-1"></i>Board</a>
+                </div>
+                <div class="nav-item">
+                    <a class="nav-link waves-effect waves-light create-event"><i class="fas fa-plus-circle fa-fw mr-1"></i>Event</a>
+                </div>
+                {% endif %}
                 <li class="nav-item">
-                    <a class="nav-link waves-effect waves-light" href="{% url 'logout' %}">Logout</a>
+                    <a class="nav-link waves-effect waves-light " href="{% url 'logout' %}">Logout</a>
                 </li>
             </ul>
         </div>
     </nav>
     {% endblock navbar %}
-    <div class="ml-3 mr-3 mt-5 pt-5 pr-5">
+    <div class="ml-3 mr-3 mb-5 mt-5 pt-5 pr-5">
         {% block content %}
         {% endblock content %}
         {% block modal %}
@@ -59,6 +69,20 @@
         integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl"
         crossorigin="anonymous"></script>
     <script src="{% static 'js/jquery.bootstrap.modal.forms.min.js' %}"></script>
+
+    <script type="text/javascript">
+        $(document).ready(function () {
+
+            $(".create-board").modalForm({
+                formURL: "{% url 'board-create' %}"
+            });
+
+            $(".create-event").modalForm({
+                formURL: "{% url 'event-create' %}"
+            });
+
+        });
+    </script>
     {% block scripts %}
     {% endblock scripts %}
 </body>

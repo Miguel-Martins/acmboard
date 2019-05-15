@@ -10,7 +10,7 @@
                 <div class="btn-group dropleft float-right">
                     <button class="delete-board btn btn-danger mr-1" data-id="{% url 'delete_board' b.pk %}"
                         type="button" name="button">
-                        <span class="fas fa-trash-alt"></span></button>
+                        <span class="fas fa-trash-alt fa-fw"></span></button>
                     <button class="btn btn-primary  ml-1" type="button" id="dropdownMenuButton" data-toggle="dropdown"
                         aria-haspopup="true" aria-expanded="false">
                         <i class="fas fa-chevron-down fa-fw"></i>
@@ -24,7 +24,7 @@
                 </div>
                 {% endif%}
             </h3>
-            <img class="" height="300" src="{{b.image.url}}" alt="Banner">
+            <img height="300" src="{{b.image.url}}" alt="Banner">
         </ul>
     </div>
     {% if b.eventcard_set.all %}
@@ -73,45 +73,21 @@
                 {% if user.is_superuser %}
                 <button data-id="{% url 'delete_attachment' a.id %}" class='btn-primary btn delete-attachment'><i
                         class="fas fa-minus"></i></button>
-            {% endif %}
-            <a class="mt-1" href="{{a.file.url}}">
-                {{a.file.name}}
-            </a>
+                {% endif %}
+                <a class="mt-1" href="{{a.file.url}}">
+                    {{a.file.name}}
+                </a>
             </div>
             {% endfor %}
             <button type="button" class="join-event btn btn-primary ml-1 mt-2"
                 data-id="{% url 'join_event' pk=event.pk %}">
-                <span class="fa fa-plus mr-2"></span>Join Event</button>
+                <span class="fa fa-plus mr-3"></span>Join Event</button>
         </ul>
     </div>
     {% endfor %}
     {%endif%}
 </div>
 {% endfor %}
-{% if user.is_superuser %}
-<div class="lists-container">
-    <div class="list">
-        <ul class="list-items pb-0">
-            <h3 class="list-title pb-0"> Create New Board
-                <div class="btn-group float-right">
-                    <button class="create-board btn btn-primary" type="button" name="button">
-                        <span class="fa fa-plus mr-2"></span></button>
-                </div>
-            </h3>
-        </ul>
-    </div>
-    <div class="list">
-        <ul class="list-items pb-0">
-            <h3 class="list-title pb-0"> Create New Event
-                <div class="btn-group float-right">
-                    <button class="create-event btn btn-primary" type="button" name="button">
-                        <span class="fa fa-plus mr-2"></span></button>
-                </div>
-            </h3>
-        </ul>
-    </div>
-</div>
-{% endif %}
 {% endblock content %}
 
 {% block scripts %}
@@ -126,14 +102,6 @@
         $(".join-task").each(function () {
             $(this).modalForm({ formURL: $(this).data('id') });
         })
-
-        $(".create-board").modalForm({
-            formURL: "{% url 'board-create' %}"
-        });
-
-        $(".create-event").modalForm({
-            formURL: "{% url 'event-create' %}"
-        });
 
         $(".delete-board").each(function () {
             $(this).modalForm({ formURL: $(this).data('id') });

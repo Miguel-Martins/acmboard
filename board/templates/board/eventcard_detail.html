@@ -1,43 +1,55 @@
 {% extends "board/base.html" %}
 {% load static %}
 {% block content %}
-<div class="container bg-light p-3">
-    <h1 class="list-title">Title: {{ object.event_name }}</h1>
-    <h3 class="list-title">Descriptions: {{ object.small_description }}</h3>
-    <h4 class="list-title">Details: {{ object.big_description }}</h4>
-    <h4 class="ml-3">Tasks</h4>
-    <ul class="list-items">
-        {% for task in object.task_set.all %}
-        <div class="input-group mb-3">
-            <li class="w-75">{{ task.description }}</li>
+<div class="container border border-dark rounded bg-light p-3">
+    <div class="container">
+        <h1 class="mt-3">Title: <small>{{ object.event_name }}</small>
             {% if user.is_superuser %}
-            <div class="input-group-append w-25">
-                <button class="delete-task btn btn-primary" type="button" name="button"
-                    data-id="{% url 'delete_task' task.pk %}"><i class="fas fa-trash-alt"></i>
-                </button>
+            <div class="float-right">
+                <button type="button" class="update-event btn btn-lg btn-success"
+                    data-id="{% url 'update_event' eventcard.pk %}">
+                    <span class="fas fa-edit"></span></button>
+                <button type="button" class="delete-event btn btn-lg btn-danger"
+                    data-id="{% url 'delete_event' eventcard.pk %}">
+                    <span class=" far fa-trash-alt"></span></button>
             </div>
             {% endif %}
+        </h1>
+        <div>
+            <h4 class="mt-0">Description:</h4>
+            <h4 class="ml-0"><small>{{ object.small_description }}</small></h4>
         </div>
-        {% endfor %}
-        <h4 class="mt-2 ml-2">Attachments</h4>
-        {% for a in object.attachment_set.all %}
-        <a class="m-1" href="{{a.file.url}}">{{a.file.name}}</a>
-        {% endfor %}
-        {% if user.is_superuser %}
-        <div class="container btn-group mt-2">
-            <button type="button" class="update-event btn btn-success mr-1"
-                data-id="{% url 'update_event' eventcard.pk %}">
-                <span class="fas fa-edit mr-2"></span>Update Event</button>
-            <button type="button" class="delete-event btn btn-danger ml-1"
-                data-id="{% url 'delete_event' eventcard.pk %}">
-                <span class=" far fa-trash-alt mr-2"></span>Delete Event</button>
+        <div class="pr-5">
+            <h4 class="mt-0">Details: </h4>
+            <h4 class="ml-0"><small>{{ object.big_description }}</small></h4>
         </div>
-        <div class="container btn-group mt-2">
-            <button class="create-task btn btn-primary mb-1 pl-5 pr-5" type="button" name="button">
-                <span class="fa fa-plus mr-2"></span>Create task</button>
-        </div>
-        {% endif %}
-    </ul>
+    </div>
+    <div class="container">
+        <h1>Tasks
+            {% if user.is_superuser %}
+            <button class="create-task btn btn-lg btn-primary" type="button" name="button">
+                <span class="fa fa-plus"></span></button>
+            {% endif %}
+        </h1>
+        <ul class="list-items">
+            {% for task in object.task_set.all %}
+            <div class="input-group mb-3">
+                <li class="w-75">{{ task.description }}</li>
+                {% if user.is_superuser %}
+                <div class="input-group-append w-25">
+                    <button class="delete-task btn btn-primary" type="button" name="button"
+                        data-id="{% url 'delete_task' task.pk %}"><i class="fas fa-trash-alt"></i>
+                    </button>
+                </div>
+                {% endif %}
+            </div>
+            {% endfor %}
+            <h1>Attachments</h1>
+            {% for a in object.attachment_set.all %}
+            <a class="m-1" href="{{a.file.url}}">{{a.file.name}}</a>
+            {% endfor %}
+        </ul>
+    </div>
 </div>
 
 {% endblock content %}
