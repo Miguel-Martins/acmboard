@@ -7,8 +7,8 @@ from django.conf.urls import url
 urlpatterns = [
     path('', board_views.home, name = 'home'),
     path('events/', EventListView.as_view(), name = 'events'),
-    path('home/<int:pk>/update/', user_views.UserUpdateView.as_view(), name='user_update'),
     path('home/<int:pk>/update-profile/', user_views.UserProfileUpdateView.as_view(), name='user_profile_update'),
+    path('home/<int:pk>/update/', user_views.UserUpdateView.as_view(), name='user_update'),
     path('event/new/', EventCreateView.as_view(), name='event-create'),
     path('event/<int:pk>/', EventDetailView.as_view(), name='event-detail'),
     path('event/<int:pk>/update_event/', board_views.ModalEventEditView.as_view(), name='update_event'),

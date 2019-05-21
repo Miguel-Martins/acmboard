@@ -2,8 +2,7 @@
   font-size: 15px;
 }
 body,html{
-  background-color: #2cb5e8!important;
-  background: linear-gradient(141deg, #9fb8ad 0%, #1fc8db 51%, #2cb5e8 75%)no-repeat center center fixed;
+    background-color: #5e646b!important
 }
 
 .list-flex-container {
@@ -13,6 +12,7 @@ body,html{
 }
 .lists-container {
     display: flex;
+    flex-flow: row;
     align-items: start;
     padding: 0 0.8rem 0.8rem;
 }
@@ -21,7 +21,7 @@ body,html{
     flex: 0 0 27rem;
     display: flex;
     flex-direction: column;
-    background-color: #e2e4e6;
+    background-color: #fff;
     border-radius: 0.3rem;
     margin-right: 1rem;
     margin-bottom: 1rem;

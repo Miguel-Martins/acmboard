@@ -1,6 +1,6 @@
 {% extends "board/base.html" %}
 {% block content %}
-<div class="container border border-dark rounded bg-light p-3">
+<div class="container border border-dark shadow rounded bg-light p-3">
     <div class="media">
         <img class="border border-dark rounded-circle" src="{{user.profile.image.url}}" alt="Profile Picture">
         <div class="media-body ml-3">
@@ -11,13 +11,13 @@
                 <button type="button" class="update-user btn btn-primary" data-id="{% url 'user_update' user.pk %}">Update
                     User</button>
                 <button type="button" class="update-profile btn btn-primary"
-                    data-id="{% url 'user_profile_update' user.pk %}">Update
+                    data-id="{% url 'user_profile_update' user.profile.pk %}">Update
                     Profile</button>
             </div>
         </div>
     </div>
 </div>
-<div class="container border border-dark rounded bg-light p-3 mt-4 mb-5">
+<div class="container border border-dark shadow rounded bg-light p-3 mt-4 mb-5">
     <h2>All Your Events</h2>
     <div class="list-flex-container mt-3">
         {% if events %}
@@ -70,11 +70,11 @@
             $(this).modalForm({ formURL: $(this).data('id') });
         })
 
-        $(".update-user").each(function () {
+        $(".update-profile").each(function () {
             $(this).modalForm({ formURL: $(this).data('id') });
         });
 
-        $(".update-profile").each(function () {
+        $(".update-user").each(function () {
             $(this).modalForm({ formURL: $(this).data('id') });
         });
 

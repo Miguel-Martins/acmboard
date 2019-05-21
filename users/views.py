@@ -1,7 +1,7 @@
 from django.shortcuts import render, redirect
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
-from .forms import UserRegisterForm, UserUpdateForm, ProfileUpdateForm 
+from .forms import UserRegisterForm, UserUpdateForm, ProfileUpdateForm
 
 from django.urls import reverse_lazy
 from board.forms import UserForm
@@ -33,3 +33,4 @@ class UserProfileUpdateView(BSModalUpdateView):
     template_name = 'users/update-profile.html'
     form_class = ProfileUpdateForm
     success_url = reverse_lazy('home')
+
